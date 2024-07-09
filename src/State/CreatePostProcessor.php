@@ -35,7 +35,7 @@ final class CreatePostProcessor implements ProcessorInterface
      *
      * @return Message|void The processed data.
      *
-     * @throws BadRequestHttpException if the data is not an instance of Message or the unicorn is not valid.
+     * @throws BadRequestHttpException if the data is not an instance of Message, the data is not valid, or the unicorn is not valid.
      * @throws NotFoundHttpException if the unicorn is not found.
      * @throws ConflictHttpException if the unicorn has already been purchased.
      */
@@ -43,6 +43,12 @@ final class CreatePostProcessor implements ProcessorInterface
     {
         // If not of type Message throw error
         if (!$data instanceof Message) throw new BadRequestHttpException("Expected instance of Message");
+
+        // Simply reject any dirty input
+        if (
+            $data->getAuthor() !== htmlspecialchars($data->getAuthor()) ||
+            $data->getMessage() !== htmlspecialchars($data->getMessage())
+        ) throw new BadRequestHttpException("Invalid data");
 
         // If not of type Unicorn throw error
         if (!$data->getUnicorn() instanceof Unicorn) throw new BadRequestHttpException("Expected instance of Unicorn");

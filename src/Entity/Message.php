@@ -9,7 +9,7 @@ namespace App\Entity;
 use ApiPlatform\Action\NotFoundAction;
 use ApiPlatform\Metadata\{ApiResource, Get, GetCollection, Post, Patch, Put, Delete};
 use App\Repository\MessageRepository;
-use App\State\CreatePostProcessor;
+use App\State\{CreatePostProcessor, UpdatePostProcessor};
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,6 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             openapi: false
         ),
         new Patch(
+            processor: UpdatePostProcessor::class,
             denormalizationContext: [
                 "groups" => ["message:patch"],
                 "allow_extra_attributes" => false
@@ -56,12 +57,12 @@ class Message
 
     #[ORM\Column(length: 255)]
     #[Groups(["message:write"])]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     private ?string $author = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Groups(["message:write", "message:patch"])]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     private ?string $message = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
@@ -75,7 +76,7 @@ class Message
     #[ORM\ManyToOne(inversedBy: "Messages")]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(["message:write"])]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     private ?Unicorn $unicorn = null;
 
     public function __construct()
