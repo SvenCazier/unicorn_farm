@@ -1,0 +1,45 @@
+{# templates/email/purchaseEmailTemplate.twig #}
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+	<head>
+		<meta charset="utf-8">
+		<style>
+			table {
+				border-collapse: collapse;
+				width: 100%;
+			}
+			th,
+			td {
+				padding: 1em;
+			}
+			tbody tr:nth-child(odd) {
+				background: lightgray;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h1>Listing of all posts related to
+			{{ unicornName }}:</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>Author</th>
+					<th>Post</th>
+					<th>Date</th>
+					<th>Time</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for message in messages %}
+					<tr>
+						<td>{{ message.author }}</td>
+						<td>{{ message.message }}</td>
+						<td>{{ message.createdAtValue|date("Y-m-d") }}</td>
+						<td>{{ message.createdAtValue|date("H:i") }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</body>
+</html>
