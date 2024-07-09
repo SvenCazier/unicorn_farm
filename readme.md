@@ -25,4 +25,4 @@
 ## Execution:
 - Run dbsetup.sh in root to initialize the database.
 - Start server.
-- Go to 127.0.0.1:PORT/api for docs (and integrated testing).
+- Go to localhost:PORT/api endpoint for docs (and integrated testing).
